@@ -1,11 +1,6 @@
-body {
-    margin:10px;
+body,ul {
+    margin:0;
     padding:0;
-    width:2000px
-}
-ul{
-  margin:200px;
-  width:60% !important;
 }
 .lorem {
     margin:0 auto;

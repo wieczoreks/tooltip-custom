@@ -24,69 +24,38 @@ document.addEventListener('DOMContentLoaded', () => {
         let pageYOffset = window.pageYOffset;
         let pageXOffset = window.pageXOffset
         
-
-        if (position === "top") {
-            
-            topPos = pageYOffset + spanBox.top - (tooltipBox.height + padding);
-            leftPos = spanBox.left
-            tooltip.classList.add('top')
-            tooltip.setAttribute('style', 'top:'+topPos+'px;'+'left:'+leftPos+ 'px')
-            
-            if(tooltip.getBoundingClientRect().top <= 0 ){
+           if(tooltip.getBoundingClientRect().top >= 0 ){
+               console.log("tooltip.getBoundingClientRect().top >= 0")
                 topPos = pageYOffset + spanBox.top + (spanBox.height + padding);
                 tooltip.classList.remove('top');
+                tooltip.classList.remove('right');
+                tooltip.classList.remove('left');
                 tooltip.classList.add('bottom');
                 tooltip.setAttribute('style', 'top:'+topPos+'px;'+'left:'+leftPos+ 'px')
             }
-        }
-        else if (position === "bottom") {
-                let tooltipBox;
-                leftPos = spanBox.left;
-                topPos = pageYOffset + spanBox.top + (spanBox.height + padding);
-                tooltip.classList.add('bottom');
-                tooltip.setAttribute('style', 'top:'+topPos+'px;'+'left:'+leftPos+ 'px')
-                tooltipBox = tooltip.getBoundingClientRect();
-                if(tooltipBox.bottom >= docHeight){
+            else if(tooltip.getBoundingClientRect().bottom <= docHeight){
+                console.log("tooltip.getBoundingClientRect().bottom <= docHeight")
                     topPos = pageYOffset + spanBox.top - (tooltipBox.height + padding);
                     tooltip.classList.remove('bottom');
                     tooltip.classList.add('top');
                     tooltip.setAttribute('style', 'top:'+topPos+'px;'+'left:'+leftPos+ 'px')
                 }
-
-        }
-        else if (position === "left") {
-            topPos = pageYOffset + spanBox.top + padding;
-            leftPos = pageXOffset+ spanBox.left - (tooltipBox.width + padding)
-            tooltip.classList.add('left');
-            tooltip.setAttribute('style', 'top:'+topPos+'px;'+'left:'+leftPos+ 'px');
-            if(tooltip.getBoundingClientRect().left<=0){
-                
+            else if(tooltip.getBoundingClientRect().left >= 0){ 
                 topPos = pageYOffset + spanBox.top + padding;
                 leftPos = pageXOffset+ spanBox.left + (spanBox.width + padding)
                 tooltip.classList.remove('left');
                 tooltip.classList.add('right');
                 tooltip.setAttribute('style', 'top:'+topPos+'px;'+'left:'+leftPos+ 'px')
             }
-        }
-        else if (position === "right") {
-            topPos = pageYOffset + spanBox.top + padding;
-            leftPos =pageXOffset+ spanBox.left + (spanBox.width + padding)
-            tooltip.classList.add('right');
-            tooltip.setAttribute('style', 'top:'+topPos+'px;'+'left:'+leftPos+ 'px');
-            if(tooltip.getBoundingClientRect().left >= docWidth){
-            topPos = pageYOffset + spanBox.top + padding;
-            leftPos = pageXOffset+ spanBox.left - (tooltipBox.width + padding);
-            tooltip.classList.remove('right');
-            tooltip.classList.add('left');
-            tooltip.setAttribute('style', 'top:'+topPos+'px;'+'left:'+leftPos+ 'px');
+            else if(tooltip.getBoundingClientRect().left <= docWidth){
+                topPos = pageYOffset + spanBox.top + padding;
+                leftPos = pageXOffset+ spanBox.left - (tooltipBox.width + padding);
+                tooltip.classList.remove('right');
+                tooltip.classList.add('left');
+                tooltip.setAttribute('style', 'top:'+topPos+'px;'+'left:'+leftPos+ 'px');
             }
-        } 
-        else {
-            topPos = spanBox.top - (tooltipBox.height + padding);
-            leftPos = spanBox.left
-            tooltip.classList.add('top')
-            tooltip.setAttribute('style', 'top:'+topPos+'px;'+'left:'+leftPos+ 'px')
-        }
+   
+        
 
       });
       span.addEventListener('mouseout', (e)=>{
