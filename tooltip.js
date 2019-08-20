@@ -33,19 +33,23 @@ document.addEventListener('DOMContentLoaded', () => {
             
         }
         else if (position === "bottom") {
-            topPos = pageYOffset + spanBox.top + (spanBox.height + padding);
-            leftPos = spanBox.left
-            tooltip.classList.add('bottom');
-            tooltip.setAttribute('style', 'top:'+topPos+'px;'+'left:'+leftPos+ 'px')
-            console.log(tooltipBox.top, tooltipBox.height,docHeight )
-            // if(tooltipBox+tooltipBox.height > docHeight){
-            //     console.log("TEST")
-            // }
+                leftPos = spanBox.left;
+                topPos = pageYOffset + spanBox.top + (spanBox.height + padding);
+                tooltip.classList.add('bottom');
+                tooltip.setAttribute('style', 'top:'+topPos+'px;'+'left:'+leftPos+ 'px')
+             if(topPos+tooltipBox.height > docHeight+pageYOffset){
+                span.setAttribute("data-position","top");
+                topPos = pageYOffset + spanBox.top - (tooltipBox.height + padding);
+                tooltip.classList.add('top')
+                tooltip.setAttribute('style', 'top:'+topPos+'px;'+'left:'+leftPos+ 'px')
+                console.log("TEST" )
+             } 
+             tooltip.classList.remove('top')
         }
         else if (position === "left") {
             topPos = pageYOffset + spanBox.top + padding;
             leftPos = spanBox.left - (tooltipBox.width + padding)
-            console.log(tooltip.width)
+            
             tooltip.classList.add('left');
             tooltip.setAttribute('style', 'top:'+topPos+'px;'+'left:'+leftPos+ 'px')
         }
