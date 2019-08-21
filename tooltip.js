@@ -151,12 +151,4 @@ class Tooltip {
     }
 }
 
-let tool = new Tooltip({   
-        element:'span',
-        offset:5,
-       
-})
-
-tool.init()
-
 
