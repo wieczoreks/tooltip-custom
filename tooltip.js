@@ -1,102 +1,162 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const spans = document.querySelectorAll('span')
-    const docHeight = document.documentElement.clientHeight;
-    const docWidth = document.documentElement.clientWidth;
-    for (var i = 0; i < spans.length; i++) {
-        let span = spans[i];
-        span.addEventListener('mouseover', (e) => {
-            let textNode = span.getAttribute('data-tooltip')
-            let tooltip = document.createElement('div')
-            let animationMode = span.dataset.animation;
-            tooltip.className = 'tooltip';
-            switch (animationMode) {
-                case 'slideInUp':
-                    tooltip.classList.add('animSlideInUp');
-                    break;
-                case 'slideInDown':
-                    tooltip.classList.add('animSlideInDown');
-                    break;
-                case 'slideInLeft':
-                    tooltip.classList.add('animSlideInLeft');
-                    break;
-                case 'slideInRight':
-                    tooltip.classList.add('animSlideInRight');
-                    break;
-                case 'fadeIn':
-                    tooltip.classList.add('animFadeIn');
-                    break;
-                default:
-                    tooltip.classList.add('animSlideInUp');
-                    break;
-            }
-            tooltip.appendChild(document.createTextNode(textNode));
-            let firstChild = document.body.firstChild;
-            firstChild.parentNode.insertBefore(tooltip, firstChild);
-            let padding = 5;
-            let spanBox = span.getBoundingClientRect();
-            let tooltipBox = tooltip.getBoundingClientRect();
-            let topPos;
-            let leftPos;
-            let position = span.getAttribute("data-position");
-            let pageYOffset = window.pageYOffset;
-            let pageXOffset = window.pageXOffset
-            if (position === "top") {
-                topPos = pageYOffset + spanBox.top - (tooltipBox.height + padding);
-                leftPos = spanBox.left
-                tooltip.classList.add('top')
-                tooltip.setAttribute('style', 'top:' + topPos + 'px;' + 'left:' + leftPos + 'px')
-                if (tooltip.getBoundingClientRect().top <= 0) {
-                    topPos = pageYOffset + spanBox.top + (spanBox.height + padding);
-                    tooltip.classList.remove('top');
-                    tooltip.classList.add('bottom');
-                    tooltip.setAttribute('style', 'top:' + topPos + 'px;' + 'left:' + leftPos + 'px')
-                }
-            } else if (position === "bottom") {
-                leftPos = spanBox.left;
-                topPos = pageYOffset + spanBox.top + (spanBox.height + padding);
-                tooltip.classList.add('bottom');
-                tooltip.setAttribute('style', 'top:' + topPos + 'px;' + 'left:' + leftPos + 'px')
-                if (tooltip.getBoundingClientRect().bottom >= docHeight) {
-                    topPos = pageYOffset + spanBox.top - (tooltipBox.height + padding);
-                    tooltip.classList.remove('bottom');
-                    tooltip.classList.add('top');
-                    tooltip.setAttribute('style', 'top:' + topPos + 'px;' + 'left:' + leftPos + 'px')
-                }
-            } else if (position === "left") {
-                topPos = pageYOffset + spanBox.top + padding;
-                leftPos = pageXOffset + spanBox.left - (tooltipBox.width + padding)
-                tooltip.classList.add('left');
-                tooltip.setAttribute('style', 'top:' + topPos + 'px;' + 'left:' + leftPos + 'px');
-                if (tooltip.getBoundingClientRect().left <= 0) {
+class Tooltip {
+    constructor(obj){
+        this.docHeight = document.documentElement.clientHeight;
+        this.docWidth = document.documentElement.clientWidth;
+        this.elem = obj.element
+        this.offset = obj.offset;
+        this.width = obj.width;
+        this.backgroundColor = obj.backgroundColor;
+        this.color = obj.color;
+        this.padding = obj.padding;
+        this.fontSize = obj.fontSize;
+        this.borderRadius = obj.borderRadius;
+        this.fontFamily = obj.fontFamily;
+        this.textAlign = obj.textAlign;
+        this.tooltipBeforeColor = obj.tooltipBeforeColor;
+    }
+    getElems = () => {
+        let elems = document.querySelectorAll(this.elem)
+        return elems;
+    }
+    getElemAttr = (elem) => {
+        return { 
+            tooltipText: elem.dataset.tooltip,
+            tooltipAnimMode: elem.dataset.animation,
+            tooltipPosition: elem.dataset.position
+        }
+    }
+   
+    setElemStyle = (elem) => { 
+        let str = `color:${this.color};width:${this.width};background-color:${this.backgroundColor};padding:${this.padding}px;font-size:${this.fontSize}px;border-radius:${this.borderRadius}px;font-family:${this.fontFamily};text-align:${this.textAlign}`
+        elem.setAttribute('style',str);
+        
+        return elem
+    }
+    addAnimModeClass = (animMode, tooltip) => {   
+        switch (animMode) {
+            case 'slideInUp':
+                tooltip.classList.add('animSlideInUp');
+                
+                break;
+            case 'slideInDown':
+                tooltip.classList.add('animSlideInDown');
+                break;
+            case 'slideInLeft':
+                tooltip.classList.add('animSlideInLeft');
+                break;
+            case 'slideInRight':
+                tooltip.classList.add('animSlideInRight');
+                break;
+            case 'fadeIn':
+                tooltip.classList.add('animFadeIn');
+                break;
+            default:
+                tooltip.classList.add('animSlideInUp');
+                break;
+        }
+        return tooltip
 
-                    topPos = pageYOffset + spanBox.top + padding;
-                    leftPos = pageXOffset + spanBox.left + (spanBox.width + padding)
-                    tooltip.classList.remove('left');
-                    tooltip.classList.add('right');
-                    tooltip.setAttribute('style', 'top:' + topPos + 'px;' + 'left:' + leftPos + 'px')
-                }
-            } else if (position === "right") {
-                topPos = pageYOffset + spanBox.top + padding;
-                leftPos = pageXOffset + spanBox.left + (spanBox.width + padding)
-                tooltip.classList.add('right');
-                tooltip.setAttribute('style', 'top:' + topPos + 'px;' + 'left:' + leftPos + 'px');
-                if (tooltip.getBoundingClientRect().left >= docWidth) {
-                    topPos = pageYOffset + spanBox.top + padding;
-                    leftPos = pageXOffset + spanBox.left - (tooltipBox.width + padding);
-                    tooltip.classList.remove('right');
-                    tooltip.classList.add('left');
-                    tooltip.setAttribute('style', 'top:' + topPos + 'px;' + 'left:' + leftPos + 'px');
-                }
-            } else {
-                topPos = spanBox.top - (tooltipBox.height + padding);
-                leftPos = spanBox.left
-                tooltip.classList.add('top')
-                tooltip.setAttribute('style', 'top:' + topPos + 'px;' + 'left:' + leftPos + 'px')
-            }
+    }
+    createTooltip = (elem) => {
+        let tooltip = document.createElement('div'); 
+        tooltip.classList.add('tooltip');
+        let animationMode = this.getElemAttr(elem).tooltipAnimMode;
+        tooltip = this.addAnimModeClass(animationMode, tooltip);
+        let textNode = this.getElemAttr(elem).tooltipText;
+        tooltip.appendChild(document.createTextNode(textNode));
+        tooltip = this.setElemStyle(tooltip)
+        
+        return tooltip
+    }
+    positionTooltip = (tooltip) => {
+        let firstChild = document.body.firstChild;
+        firstChild.parentNode.insertBefore(tooltip, firstChild);
+    }
+    getBox = (el) => {
+        return el.getBoundingClientRect()
+    }
+    setTopPosition = (tooltip, tooltipBox, elBox) => {
+        let topPos = window.pageYOffset + elBox.top - (tooltipBox.height + this.offset);
+        let leftPos = window.pageXOffset + elBox.left
+        let attr = tooltip.getAttribute('style')
+        tooltip.classList.add('top');
+        tooltip.setAttribute('style', `${attr};top:${topPos}px; left:${leftPos}px;`);        
+    }
+    setBottomPosition = (tooltip,elBox) => {
+        let leftPos = window.pageXOffset+ elBox.left;
+        let topPos = window.pageYOffset + elBox.top + (elBox.height + this.offset);
+        let attr = tooltip.getAttribute('style');
+        tooltip.classList.add('bottom');
+        tooltip.setAttribute('style', `${attr};top:${topPos}px; left:${leftPos}px;`)   
+    }
+    setLeftPosition = (tooltip, tooltipBox, elBox) => {
+        let topPos = window.pageYOffset + elBox.top;
+        let leftPos = window.pageXOffset + elBox.left - (tooltipBox.width + this.offset)
+        let attr = tooltip.getAttribute('style')
+        tooltip.classList.add('left');
+        tooltip.setAttribute('style', `${attr};top:${topPos}px; left:${leftPos}px;`)   
+    }
+    setRightPosition = (tooltip, elBox) => {
+        let topPos = window.pageYOffset + elBox.top;
+        let leftPos = window.pageXOffset + elBox.left + (elBox.width + this.offset);
+        let attr = tooltip.getAttribute('style');
+        tooltip.classList.add('right');
+        tooltip.setAttribute('style', `${attr};top:${topPos}px; left:${leftPos}px;`)   
+    }
 
-        });
-        span.addEventListener('mouseout', (e) => {
-            document.querySelector(".tooltip").remove();
+    init = () => {
+        document.addEventListener('DOMContentLoaded', () => {
+            const elems = this.getElems()
+            for (var i = 0; i < elems.length; i++) {
+                let elem = elems[i];
+                elem.addEventListener('mouseover', (e) => { 
+                    let tooltip = this.createTooltip(elem);    
+                    this.positionTooltip(tooltip);
+                    let elemBox = this.getBox(elem);
+                    let tooltipBox = this.getBox(tooltip);
+                    let position = this.getElemAttr(elem).tooltipPosition
+                    if (position === "top") {
+                        this.setTopPosition(tooltip, tooltipBox, elemBox)
+                        if (this.getBox(tooltip).top <= 0) {
+                            tooltip.classList.remove('top');
+                            this.setBottomPosition (tooltip, elemBox)
+                        }
+                    } else if (position === "bottom") {
+                        this.setBottomPosition (tooltip, elemBox)
+                        if (this.getBox(tooltip).bottom >= this.docHeight) {
+                            tooltip.classList.remove('bottom');
+                            this.setTopPosition(tooltip, tooltipBox, elemBox)
+                        }
+                    } else if (position === "left") {
+                        this.setLeftPosition(tooltip, tooltipBox, elemBox)
+                        if (this.getBox(tooltip).left <= 0) {
+                            this.setRightPosition(tooltip, elemBox)
+                            tooltip.classList.remove('left');  
+                        }
+                    } else if (position === "right") {
+                        this.setRightPosition(tooltip, elemBox)
+                        if (this.getBox(tooltip).left >= this.docWidth) {  
+                            tooltip.classList.remove('right');
+                            this.setLeftPosition(tooltip, tooltipBox, elemBox)
+                        }
+                    } else {
+                        this.setTopPosition(tooltip, tooltipBox, elemBox)
+                    }
+                });
+                elem.addEventListener('mouseout', (e) => {
+                    document.querySelector(".tooltip").remove();
+                })
+            }
         })
     }
+}
+
+let tool = new Tooltip({   
+        element:'span',
+        offset:5,
+       
 })
+
+tool.init()
+
+
