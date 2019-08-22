@@ -1,17 +1,4 @@
-// function debounce(func, time){
-//     let timer;
-
-//     return function() {
-//       clearTimeout(timer);
-
-//       timer = setTimeout(()=>{
-//         func.apply(this, arguments)
-//       },time)
-//       console.log(timer)
-//     }
-//   }
-
-class Tooltip {
+ class Tooltip {
     constructor() {
         this.docHeight = document.documentElement.clientHeight;
         this.docWidth = document.documentElement.clientWidth;
@@ -64,13 +51,7 @@ class Tooltip {
         tooltip.classList.add('left');
         tooltip.setAttribute('style', `top:${topPos}px; left:${leftPos}px;`)
     }
-    // setRightPosition = (tooltip, elBox) => {
-    //     let topPos = window.pageYOffset + elBox.top;
-    //     let leftPos = window.pageXOffset + elBox.left +(elBox.width + this.offset);
-    //     tooltip.classList.add('right');
-    //     tooltip.setAttribute('style',`top:${topPos}px; left:${leftPos}px;`)   
-    // }
-
+    
     init = () => {
         document.addEventListener('DOMContentLoaded', () => {
             const elems = this.getElems()
@@ -83,7 +64,7 @@ class Tooltip {
                     let elemBox = this.getBox(elem);
                     let tooltipBox = this.getBox(tooltip);
                     let position = this.getElemAttr(elem).tooltipPosition
-                    // if (position === "top") {
+                 
                     this.setTopPosition(tooltip, tooltipBox, elemBox)
                     if (this.getBox(tooltip).top < 0 && (this.getBox(tooltip).left >= 0 && this.getBox(tooltip).left < (this.docWidth - this.getBox(tooltip).width))) {
                         tooltip.classList.remove('top');
@@ -93,27 +74,6 @@ class Tooltip {
                         tooltip.classList.remove('top');
                         this.setLeftPosition(tooltip, tooltipBox, elemBox)
                     }
-                    // } else if (position === "bottom") {
-                    //     this.setBottomPosition (tooltip, elemBox)
-                    //     if (this.getBox(tooltip).bottom >= this.docHeight) {
-                    //         tooltip.classList.remove('bottom');
-                    //         this.setTopPosition(tooltip, tooltipBox, elemBox)
-                    //     }
-                    // } else if (position === "left") {
-                    //     this.setLeftPosition(tooltip, tooltipBox, elemBox)
-                    //     if (this.getBox(tooltip).left <= 0) {
-                    //         this.setRightPosition(tooltip, elemBox)
-                    //         tooltip.classList.remove('left');  
-                    //     }
-                    // } else if (position === "right") {
-                    //     this.setRightPosition(tooltip, elemBox)
-                    //     if (this.getBox(tooltip).left >= this.docWidth) {  
-                    //         tooltip.classList.remove('right');
-                    //         this.setLeftPosition(tooltip, tooltipBox, elemBox)
-                    //     }
-                    // } else {
-                    //     this.setTopPosition(tooltip, tooltipBox, elemBox)
-                    // }
                 });
 
                 elem.addEventListener('mouseout', (e) => {
@@ -124,5 +84,6 @@ class Tooltip {
         })
     }
 }
-let tool = new Tooltip()
-tool.init()
+
+let tooltip = new Tooltip()
+tooltip.init()
