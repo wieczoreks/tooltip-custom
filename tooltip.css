@@ -25,36 +25,21 @@ body, ul {
 
 .tooltip {
     box-sizing:border-box;
-    width:200px;
+    
+    max-width: 400px;
     height:auto;
     position:absolute;
     background-color:black;
     color:white;
-    padding:5px;
+    padding:15px;
     z-index:5;
-    border-radius:4px;
     font-size: 16px;
     margin:0
 }
-.tooltip.animSlideInUp{
-  animation-name: slideInUp;
-  animation-duration:2s;
-}
-.tooltip.animSlideInDown{
-  animation-name: slideInDown;
-  animation-duration:2s;
-}
-.tooltip.animSlideInLeft{
-  animation-name: slideInLeft;
-  animation-duration:2s;
-}
-.tooltip.animSlideInRight{
-  animation-name: slideInRight;
-  animation-duration:2s;
-}
+
 .tooltip.animFadeIn{
   animation-name: fadeIn;
-  animation-duration:2s;
+  animation-duration:0.5s;
 }
 
 .tooltip:before {
@@ -69,7 +54,7 @@ body, ul {
     border-right: 5px solid transparent;
     border-top: 5px solid var(--tooltip-before-color);
     bottom:-5px;
-    left:calc(var(--elem-width)/2);
+    left:0
     
   }
   .tooltip.bottom:before {
@@ -77,71 +62,23 @@ body, ul {
     border-right: 5px solid transparent;
     border-bottom: 5px solid var(--tooltip-before-color);
     top:-5px;
-    left:calc(var(--elem-width)/2);
+    left:0;
   }
   .tooltip.left:before {
     border-top: 5px solid transparent;
     border-bottom: 5px solid transparent;
     border-left: 5px solid var(--tooltip-before-color);
-    top:calc(var(--elem-height)/2);
+    top:0;
     right:-5px;
   }
   .tooltip.right:before {
     border-top: 5px solid transparent;
     border-bottom: 5px solid transparent;
     border-right: 5px solid var(--tooltip-before-color);
-    top:calc(var(--elem-height)/2);
+    top:0;
     left:-5px;
   }
 
-  @keyframes slideInUp {
-    from {
-      -webkit-transform: translate3d(0, 100%, 0);
-      transform: translate3d(0, 100%, 0);
-      visibility: visible;
-    }
-  
-    to {
-      -webkit-transform: translate3d(0, 0, 0);
-      transform: translate3d(0, 0, 0);
-    }
-  }
-  @keyframes slideInDown {
-    from {
-      -webkit-transform: translate3d(0, -100%, 0);
-      transform: translate3d(0, -100%, 0);
-      visibility: visible;
-    }
-  
-    to {
-      -webkit-transform: translate3d(0, 0, 0);
-      transform: translate3d(0, 0, 0);
-    }
-  }
-  @keyframes slideInLeft {
-    from {
-      -webkit-transform: translate3d(-100%, 0, 0);
-      transform: translate3d(-100%, 0, 0);
-      visibility: visible;
-    }
-  
-    to {
-      -webkit-transform: translate3d(0, 0, 0);
-      transform: translate3d(0, 0, 0);
-    }
-  }
-  @keyframes slideInRight {
-    from {
-      -webkit-transform: translate3d(100%, 0, 0);
-      transform: translate3d(100%, 0, 0);
-      visibility: visible;
-    }
-  
-    to {
-      -webkit-transform: translate3d(0, 0, 0);
-      transform: translate3d(0, 0, 0);
-    }
-  }
   @keyframes fadeIn {
     from {
       opacity: 0;
@@ -150,4 +87,20 @@ body, ul {
     to {
       opacity: 1;
     }
+  }
+  @media (max-width:768px){
+    .tooltip {
+      width:50% !important;
+      max-width: 500px !important;
+      height:auto;
+      left:25%!important;
+      position:relative !important;
+      padding:10px;
+      font-size: 12px;
+      
+  }
+  .tooltip:before{
+    opacity: 0;
+    visibility:hidden
+  }
   }
